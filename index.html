@@ -12,6 +12,12 @@
       color: white;
       font-family: sans-serif;
       text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1;
     }
     #chatBox {
       width: 90%;
@@ -24,26 +30,33 @@
       background: rgba(0,0,0,0.6);
       text-align: left;
     }
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      background: rgba(0,0,0,0.4);
+    }
   </style>
 </head>
 <body>
 
-  <h1>📻 Radio Lorenzana</h1>
-  <p>Escúchanos en vivo</p>
-  <audio controls autoplay style="margin:20px 0;">
-    <source src="https://stream.zeno.fm/8pn33qbynoxvv" type="audio/mpeg">
-    Tu navegador no soporta audio HTML5.
-  </audio>
+  <main>
+    <h1>📻 Radio Lorenzana</h1>
+    <p>Escúchanos en vivo</p>
+    <audio controls autoplay style="margin:20px 0;">
+      <source src="https://stream.zeno.fm/8pn33qbynoxvv" type="audio/mpeg">
+      Tu navegador no soporta audio HTML5.
+    </audio>
+  </main>
 
-  <!-- Chat limpio al final -->
-  <div style="margin-top:50px;">
+  <!-- Chat fijo en footer -->
+  <footer>
     <h2>💬 Chat en vivo</h2>
     <div id="chatBox"></div>
 
     <input type="text" id="username" placeholder="Tu nombre" style="padding:8px; margin:5px; width:30%;">
     <input type="text" id="message" placeholder="Escribe un mensaje..." style="padding:8px; margin:5px; width:40%;">
     <button onclick="sendMessage()" style="padding:8px; background:#4caf50; color:white; border:none; border-radius:5px;">Enviar</button>
-  </div>
+  </footer>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
