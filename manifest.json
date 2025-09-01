@@ -1,0 +1,20 @@
+{
+  "name": "Radio Lorenzana",
+  "short_name": "Radio",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#4caf50",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "fondo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

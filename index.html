@@ -9,7 +9,9 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: url('fondo.png') no-repeat center center/cover;
+      background: url('fondo.png') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
       color: white;
       text-align: center;
       min-height: 100vh;
@@ -19,52 +21,56 @@
       align-items: center;
     }
     h1 {
-      font-size: 2.5em;
+      font-size: 2em;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     h2 {
-      font-size: 1.3em;
+      font-size: 1.2em;
       margin-bottom: auto;
     }
     .player-bar {
       position: fixed;
-      bottom: 50px;
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(0,0,0,0.8);
-      padding: 15px 25px;
+      padding: 12px 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 20px;
-      border-radius: 20px;
+      gap: 15px;
+      border-radius: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
     .btn {
-      width: 70px;
-      height: 70px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       border: none;
       color: white;
-      font-size: 28px;
+      font-size: 24px;
       cursor: pointer;
       transition: transform 0.2s;
     }
-    .btn:hover {
-      transform: scale(1.1);
-    }
+    .btn:hover { transform: scale(1.1); }
     .play { background: linear-gradient(135deg, #4caf50, #2e7d32); }
     .pause { background: linear-gradient(135deg, #ff9800, #e65100); }
     audio { display: none; }
   </style>
+  <link rel="manifest" href="manifest.json">
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
 </head>
 <body>
   <h1>Y.S.F.A. RADIO LORENZANA</h1>
   <h2>🎧 Escúchanos en vivo</h2>
 
   <div class="player-bar">
-    <span style="margin-right:15px; font-size:1.2em;">🎶 Radio en vivo</span>
+    <span style="margin-right:10px; font-size:1em;">🎶 Radio en vivo</span>
     <button class="btn play" onclick="playRadio()">▶</button>
     <button class="btn pause" onclick="pauseRadio()">⏸</button>
     <audio id="player">
