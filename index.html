@@ -13,30 +13,16 @@
       font-family: sans-serif;
       text-align: center;
     }
-    #chatBox, #pinned {
+    #chatBox {
       width: 90%;
       max-width: 600px;
       margin: 10px auto;
       border-radius: 8px;
       padding: 10px;
-    }
-    #chatBox {
       height: 300px;
       overflow-y: auto;
       background: rgba(0,0,0,0.6);
-    }
-    #pinned {
-      background: rgba(255, 255, 0, 0.2);
-      color: yellow;
-      display: none;
-    }
-    button.pin-btn {
-      background: none;
-      border: none;
-      color: yellow;
-      cursor: pointer;
-      font-size: 14px;
-      margin-left: 8px;
+      text-align: left;
     }
   </style>
 </head>
@@ -49,27 +35,20 @@
     Tu navegador no soporta audio HTML5.
   </audio>
 
-  <!-- Chat al final -->
-  <h2>💬 Chat en vivo</h2>
+  <!-- Chat limpio al final -->
+  <div style="margin-top:50px;">
+    <h2>💬 Chat en vivo</h2>
+    <div id="chatBox"></div>
 
-  <!-- Lista de mensajes fijados -->
-  <div id="pinned">
-    <h3>📌 Mensajes fijados</h3>
-    <div id="pinnedList"></div>
+    <input type="text" id="username" placeholder="Tu nombre" style="padding:8px; margin:5px; width:30%;">
+    <input type="text" id="message" placeholder="Escribe un mensaje..." style="padding:8px; margin:5px; width:40%;">
+    <button onclick="sendMessage()" style="padding:8px; background:#4caf50; color:white; border:none; border-radius:5px;">Enviar</button>
   </div>
-
-  <!-- Chat normal -->
-  <div id="chatBox"></div>
-
-  <input type="text" id="username" placeholder="Tu nombre" style="padding:8px; margin:5px; width:30%;">
-  <input type="text" id="message" placeholder="Escribe un mensaje..." style="padding:8px; margin:5px; width:40%;">
-  <button onclick="sendMessage()" style="padding:8px; background:#4caf50; color:white; border:none; border-radius:5px;">Enviar</button>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
   <script>
-    // Configuración de Firebase (con databaseURL corregido)
     var firebaseConfig = {
       apiKey: "AIzaSyADm_Tk79VV4faEMzg3kB0xJr2KyKeLrkA",
       authDomain: "radio-lorenzana-chat.firebaseapp.com",
@@ -85,36 +64,14 @@
 
     var chatBox = document.getElementById("chatBox");
 
-    // Escuchar mensajes normales
+    // Escuchar mensajes
     db.ref("messages").on("child_added", function(snapshot) {
       var msg = snapshot.val();
       if (!msg) return;
       var p = document.createElement("p");
-      p.innerHTML = "<b>" + msg.user + ":</b> " + msg.text +
-        " <button class='pin-btn' onclick=\"pinMessage('" + msg.text.replace(/'/g, "\\'") + "')\">📌</button>";
+      p.innerHTML = "<b>" + msg.user + ":</b> " + msg.text;
       chatBox.appendChild(p);
       chatBox.scrollTop = chatBox.scrollHeight;
-    });
-
-    // Función para fijar un mensaje
-    function pinMessage(text) {
-      if (text && text.trim() !== "") {
-        db.ref("pinnedMessages").push({ text: text });
-      }
-    }
-
-    // Escuchar mensajes fijados
-    db.ref("pinnedMessages").on("child_added", function(snapshot) {
-      var pinned = snapshot.val();
-      if (!pinned) return;
-      var pinnedBox = document.getElementById("pinned");
-      var pinnedList = document.getElementById("pinnedList");
-
-      var p = document.createElement("p");
-      p.innerText = pinned.text;
-      pinnedList.appendChild(p);
-
-      pinnedBox.style.display = "block";
     });
 
     // Enviar mensaje
