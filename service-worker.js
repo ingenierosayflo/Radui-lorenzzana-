@@ -1,19 +1,10 @@
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open("radio-cache").then((cache) => {
-      return cache.addAll([
-        "index.html",
-        "fondo.png",
-        "favicon.ico",
-        "manifest.json"
-      ]);
-    })
-  );
+self.addEventListener('install', function(event) {
+  event.waitUntil(caches.open('radio-cache').then(function(cache) {
+    return cache.addAll(['/', '/index.html']);
+  }));
 });
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
+self.addEventListener('fetch', function(event) {
+  event.respondWith(caches.match(event.request).then(function(response) {
+    return response || fetch(event.request);
+  }));
 });
