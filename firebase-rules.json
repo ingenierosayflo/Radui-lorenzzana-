@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "messages": {
+      ".read": true,
+      ".write": "(!data.exists() && newData.exists())",
+      "$msgid": {
+        ".validate": "newData.hasChildren(['user','text']) &&                       newData.child('user').isString() &&                       newData.child('text').isString() &&                       newData.child('text').val().length <= 200"
+      }
+    }
+  }
+}
