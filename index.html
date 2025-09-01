@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio Lorenzana</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('fondo.png') no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    h1 {
+      font-size: 2.5em;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      margin-bottom: 10px;
+    }
+    .live {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.2em;
+      margin-bottom: auto;
+    }
+    .live img {
+      width: 24px;
+      height: 24px;
+    }
+    .player-bar {
+      position: fixed;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      padding: 15px 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .btn:hover {
+      transform: scale(1.1);
+    }
+    .play { background: linear-gradient(135deg, #4caf50, #2e7d32); }
+    .pause { background: linear-gradient(135deg, #ff9800, #e65100); }
+    audio { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Radio Lorenzana</h1>
+  <div class="live">
+    <img src="icon.png" alt="icono">
+    <span>Escúchanos en vivo</span>
+  </div>
+
+  <div class="player-bar">
+    <span style="margin-right:15px; font-size:1.2em;">🎶 Radio en vivo</span>
+    <button class="btn play" onclick="playRadio()">▶</button>
+    <button class="btn pause" onclick="pauseRadio()">⏸</button>
+    <audio id="player">
+      <source src="https://stream.zeno.fm/8pn33qbynoxvv" type="audio/mpeg">
+      Tu navegador no soporta audio en línea.
+    </audio>
+  </div>
+
+  <script>
+    const player = document.getElementById("player");
+    function playRadio() { player.play(); }
+    function pauseRadio() { player.pause(); }
+  </script>
+</body>
+</html>
