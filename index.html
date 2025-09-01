@@ -84,5 +84,30 @@
     function playRadio() { player.play(); }
     function pauseRadio() { player.pause(); }
   </script>
+
+<div id="installBanner" style="display:none; position:fixed; bottom:0; left:0; width:100%; background:#222; color:white; text-align:center; padding:15px; box-shadow:0 -2px 8px rgba(0,0,0,0.5); z-index:9999;">
+  📲 ¿Quieres instalar <b>Radio Lorenzana</b> en tu dispositivo?
+  <button onclick="installPWA()" style="margin-left:10px; padding:8px 16px; background:#4caf50; color:white; border:none; border-radius:5px; cursor:pointer;">Instalar</button>
+  <button onclick="document.getElementById('installBanner').style.display='none'" style="margin-left:5px; padding:8px 16px; background:#aaa; border:none; border-radius:5px; cursor:pointer;">Cerrar</button>
+</div>
+
+<script>
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBanner').style.display = 'block';
+  });
+
+  function installPWA() {
+    document.getElementById('installBanner').style.display = 'none';
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choice) => {
+        deferredPrompt = null;
+      });
+    }
+  }
+</script>
 </body>
 </html>
