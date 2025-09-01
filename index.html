@@ -30,6 +30,14 @@
       color: yellow;
       display: none;
     }
+    button.pin-btn {
+      background: none;
+      border: none;
+      color: yellow;
+      cursor: pointer;
+      font-size: 14px;
+      margin-left: 8px;
+    }
   </style>
 </head>
 <body>
@@ -41,6 +49,7 @@
     Tu navegador no soporta audio HTML5.
   </audio>
 
+  <!-- Chat al final -->
   <h2>💬 Chat en vivo</h2>
 
   <!-- Lista de mensajes fijados -->
@@ -60,11 +69,11 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
   <script>
-    // Configuración de Firebase
+    // Configuración de Firebase (con databaseURL corregido)
     var firebaseConfig = {
       apiKey: "AIzaSyADm_Tk79VV4faEMzg3kB0xJr2KyKeLrkA",
       authDomain: "radio-lorenzana-chat.firebaseapp.com",
-      databaseURL: "https://radio-lorenzana-chat-default-rtdb.firebaseio.com",
+      databaseURL: "https://radio-lorenzana-chat-default-rtdb.firebaseio.com/",
       projectId: "radio-lorenzana-chat",
       storageBucket: "radio-lorenzana-chat.firebasestorage.app",
       messagingSenderId: "824125991839",
@@ -79,21 +88,25 @@
     // Escuchar mensajes normales
     db.ref("messages").on("child_added", function(snapshot) {
       var msg = snapshot.val();
+      if (!msg) return;
       var p = document.createElement("p");
       p.innerHTML = "<b>" + msg.user + ":</b> " + msg.text +
-        " <button onclick=\"pinMessage('" + msg.text.replace(/'/g, "\\'") + "')\">📌</button>";
+        " <button class='pin-btn' onclick=\"pinMessage('" + msg.text.replace(/'/g, "\\'") + "')\">📌</button>";
       chatBox.appendChild(p);
       chatBox.scrollTop = chatBox.scrollHeight;
     });
 
     // Función para fijar un mensaje
     function pinMessage(text) {
-      db.ref("pinnedMessages").push({ text: text });
+      if (text && text.trim() !== "") {
+        db.ref("pinnedMessages").push({ text: text });
+      }
     }
 
     // Escuchar mensajes fijados
     db.ref("pinnedMessages").on("child_added", function(snapshot) {
       var pinned = snapshot.val();
+      if (!pinned) return;
       var pinnedBox = document.getElementById("pinned");
       var pinnedList = document.getElementById("pinnedList");
 
