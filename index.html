@@ -5,8 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Radio Lorenzana</title>
   <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      background: url('fondo.png') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    #chatBox, #pinned {
+      width: 90%;
+      max-width: 600px;
+      margin: 10px auto;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    #chatBox {
+      height: 300px;
+      overflow-y: auto;
+      background: rgba(0,0,0,0.6);
+    }
+    #pinned {
+      background: rgba(255, 255, 0, 0.2);
+      color: yellow;
+      display: none;
+    }
+  </style>
 </head>
-<body style="background:#111; color:white; font-family:sans-serif; text-align:center;">
+<body>
 
   <h1>📻 Radio Lorenzana</h1>
   <p>Escúchanos en vivo</p>
@@ -16,7 +42,15 @@
   </audio>
 
   <h2>💬 Chat en vivo</h2>
-  <div id="chatBox" style="width:90%; max-width:600px; height:300px; overflow-y:auto; background:#222; color:white; padding:10px; border-radius:8px; margin:10px auto;"></div>
+
+  <!-- Lista de mensajes fijados -->
+  <div id="pinned">
+    <h3>📌 Mensajes fijados</h3>
+    <div id="pinnedList"></div>
+  </div>
+
+  <!-- Chat normal -->
+  <div id="chatBox"></div>
 
   <input type="text" id="username" placeholder="Tu nombre" style="padding:8px; margin:5px; width:30%;">
   <input type="text" id="message" placeholder="Escribe un mensaje..." style="padding:8px; margin:5px; width:40%;">
@@ -26,7 +60,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
   <script>
-    // Configuración real de Firebase
+    // Configuración de Firebase
     var firebaseConfig = {
       apiKey: "AIzaSyADm_Tk79VV4faEMzg3kB0xJr2KyKeLrkA",
       authDomain: "radio-lorenzana-chat.firebaseapp.com",
@@ -42,13 +76,32 @@
 
     var chatBox = document.getElementById("chatBox");
 
-    // Escuchar mensajes
+    // Escuchar mensajes normales
     db.ref("messages").on("child_added", function(snapshot) {
       var msg = snapshot.val();
       var p = document.createElement("p");
-      p.innerHTML = "<b>" + msg.user + ":</b> " + msg.text;
+      p.innerHTML = "<b>" + msg.user + ":</b> " + msg.text +
+        " <button onclick=\"pinMessage('" + msg.text.replace(/'/g, "\\'") + "')\">📌</button>";
       chatBox.appendChild(p);
       chatBox.scrollTop = chatBox.scrollHeight;
+    });
+
+    // Función para fijar un mensaje
+    function pinMessage(text) {
+      db.ref("pinnedMessages").push({ text: text });
+    }
+
+    // Escuchar mensajes fijados
+    db.ref("pinnedMessages").on("child_added", function(snapshot) {
+      var pinned = snapshot.val();
+      var pinnedBox = document.getElementById("pinned");
+      var pinnedList = document.getElementById("pinnedList");
+
+      var p = document.createElement("p");
+      p.innerText = pinned.text;
+      pinnedList.appendChild(p);
+
+      pinnedBox.style.display = "block";
     });
 
     // Enviar mensaje
