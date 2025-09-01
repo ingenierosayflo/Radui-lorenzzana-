@@ -121,18 +121,19 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <script>
     // ⚡ Reemplaza con tu configuración de Firebase
-    var firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_PROYECTO.firebaseapp.com",
-      databaseURL: "https://TU_PROYECTO.firebaseio.com",
-      projectId: "TU_PROYECTO",
-      storageBucket: "TU_PROYECTO.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abcdefg"
-    };
-    firebase.initializeApp(firebaseConfig);
-    var db = firebase.database();
-    var chatBox = document.getElementById("chatBox");
+    const firebaseConfig = {
+  apiKey: "AIzaSyADm_Tk79VV4faEMzg3kB0xJr2KyKeLrkA",
+  authDomain: "radio-lorenzana-chat.firebaseapp.com",
+  projectId: "radio-lorenzana-chat",
+  storageBucket: "radio-lorenzana-chat.firebasestorage.app",
+  messagingSenderId: "824125991839",
+  appId: "1:824125991839:web:340d9d3979068d68222baa",
+  measurementId: "G-WK0CC4S85E"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
     db.ref("messages").on("child_added", function(snapshot) {
       var msg = snapshot.val();
