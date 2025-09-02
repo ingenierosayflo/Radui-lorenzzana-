@@ -1,18 +1,20 @@
 {
-  "name": "Radio Lorenzana",
-  "short_name": "RadioLorenzana",
-  "start_url": "./index.html",
+  "name": "Radio Lorenzana Chat",
+  "short_name": "RL Chat",
+  "description": "Chat oficial de Radio Lorenzana - La primera emisora de San Vicente.",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
-  "background_color": "#111111",
-  "theme_color": "#111111",
+  "background_color": "#0b1220",
+  "theme_color": "#3b82f6",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "assets/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon.png",
+      "src": "assets/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
