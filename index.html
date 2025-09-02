@@ -130,12 +130,16 @@
 
     <input type="text" id="username" placeholder="Tu nombre" style="padding:8px; margin:5px; width:30%;">
     <input type="text" id="message" placeholder="Escribe un mensaje..." style="padding:8px; margin:5px; width:40%;">
+    <button id="emojiBtn" style="padding:8px; background:#ff9800; color:white; border:none; border-radius:5px;">😀</button>
     <button onclick="sendMessage()" style="padding:8px; background:#4caf50; color:white; border:none; border-radius:5px;">Enviar</button>
   </div>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <!-- Emoji Button -->
+  <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.min.js"></script>
 
   <script>
     var firebaseConfig = {
@@ -210,6 +214,20 @@
       deferredPrompt.userChoice.then((choiceResult) => {
         deferredPrompt = null;
       });
+    });
+
+    // Emoji Picker
+    const picker = new EmojiButton();
+    const emojiBtn = document.querySelector('#emojiBtn');
+    const messageInput = document.querySelector('#message');
+
+    emojiBtn.addEventListener('click', () => {
+      picker.togglePicker(emojiBtn);
+    });
+
+    picker.on('emoji', emoji => {
+      messageInput.value += emoji;
+      messageInput.focus();
     });
   </script>
 
