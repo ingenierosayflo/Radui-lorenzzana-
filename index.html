@@ -1,49 +1,89 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Radio Lorenzana • Chat</title>
-  <meta name="theme-color" content="#3b82f6" />
-
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="assets/icon-192.png" sizes="192x192" />
-  <link rel="apple-touch-icon" href="assets/icon-192.png" />
-
-  <meta name="description" content="Chat oficial de Radio Lorenzana - La primera emisora de San Vicente." />
-
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio Lorenzana</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      background: url('fondo.png') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    #chatBox {
+      width: 90%;
+      max-width: 600px;
+      margin: 10px auto;
+      border-radius: 8px;
+      padding: 10px;
+      height: 300px;
+      overflow-y: auto;
+      background: rgba(0,0,0,0.6);
+      text-align: left;
+    }
+  </style>
 </head>
 <body>
-  <header class="app-header">
-    <div class="brand">
-      <img src="assets/logo.png" alt="Radio Lorenzana" class="logo" />
-      <div class="titles">
-        <h1>Radio Lorenzana</h1>
-        <p class="subtitle">La primera emisora de San Vicente</p>
-      </div>
-    </div>
-    <button id="installBtn" class="install-btn" hidden>Instalar</button>
-  </header>
 
-  <main id="chatContainer" class="chat-container">
-    <div id="messages" class="messages" aria-live="polite"></div>
-  </main>
+  <h1>📻 Radio Lorenzana</h1>
+  <p>Escúchanos en vivo</p>
+  <audio controls autoplay style="margin:20px 0;">
+    <source src="https://stream.zeno.fm/8pn33qbynoxvv" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
 
-  <footer class="composer">
-    <form id="messageForm" autocomplete="off">
-      <input id="messageInput" type="text" placeholder="Escribe un mensaje…" maxlength="500" />
-      <button type="submit" class="send-btn" aria-label="Enviar">Enviar</button>
-    </form>
-  </footer>
+  <!-- Chat colocado bien abajo, requiere scroll -->
+  <div style="margin-top:200px; padding-bottom:100px;">
+    <h2>💬 Chat en vivo</h2>
+    <div id="chatBox"></div>
 
-  <script src="chat.js"></script>
+    <input type="text" id="username" placeholder="Tu nombre" style="padding:8px; margin:5px; width:30%;">
+    <input type="text" id="message" placeholder="Escribe un mensaje..." style="padding:8px; margin:5px; width:40%;">
+    <button onclick="sendMessage()" style="padding:8px; background:#4caf50; color:white; border:none; border-radius:5px;">Enviar</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
   <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("service-worker.js");
-      });
+    var firebaseConfig = {
+      apiKey: "AIzaSyADm_Tk79VV4faEMzg3kB0xJr2KyKeLrkA",
+      authDomain: "radio-lorenzana-chat.firebaseapp.com",
+      databaseURL: "https://radio-lorenzana-chat-default-rtdb.firebaseio.com/",
+      projectId: "radio-lorenzana-chat",
+      storageBucket: "radio-lorenzana-chat.firebasestorage.app",
+      messagingSenderId: "824125991839",
+      appId: "1:824125991839:web:340d9d3979068d68222baa",
+      measurementId: "G-WK0CC4S85E"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.database();
+
+    var chatBox = document.getElementById("chatBox");
+
+    // Escuchar mensajes
+    db.ref("messages").on("child_added", function(snapshot) {
+      var msg = snapshot.val();
+      if (!msg) return;
+      var p = document.createElement("p");
+      p.innerHTML = "<b>" + msg.user + ":</b> " + msg.text;
+      chatBox.appendChild(p);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+
+    // Enviar mensaje
+    function sendMessage() {
+      var user = document.getElementById("username").value || "Anon";
+      var text = document.getElementById("message").value;
+      if (text.trim() !== "") {
+        db.ref("messages").push({ user: user, text: text });
+        document.getElementById("message").value = "";
+      }
     }
   </script>
+
 </body>
 </html>
